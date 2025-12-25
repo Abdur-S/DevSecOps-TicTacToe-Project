@@ -4,100 +4,189 @@
 
 ![image](https://github.com/user-attachments/assets/5b2813a5-f493-4665-8964-77359b5be93a)
 
+
+---
+
 ```markdown
 # 🕹️ DevSecOps Tic-Tac-Toe Application
 
-Complete end-to-end pipeline implementation for a TypeScript/React Tic-Tac-Toe game with security scanning, GitHub Actions CI/CD, Docker multi-stage builds, and Kubernetes GitOps deployment using ArgoCD.
+A complete **end-to-end DevSecOps pipeline implementation** for a **TypeScript + React Tic-Tac-Toe game**, featuring automated security scanning, GitHub Actions CI/CD, optimized Docker multi-stage builds, and **GitOps-based Kubernetes deployment using ArgoCD**.
+
+This project demonstrates how modern DevSecOps practices can be applied to a real-world frontend application—from code commit to secure production deployment.
+
+---
 
 ## 🎯 Project Features
-- Two-player Tic-Tac-Toe with real-time scoreboard tracking
-- Responsive React UI with Tailwind CSS styling
-- Production-ready static assets generated via Vite build
-- Multi-stage Docker optimization (Node → Nginx)
-- Full DevSecOps pipeline with automated security checks
+
+- 🎮 Two-player Tic-Tac-Toe game
+- 📊 Real-time scoreboard tracking
+- 📱 Fully responsive UI using Tailwind CSS
+- ⚡ Production-ready static assets generated via Vite
+- 🐳 Optimized multi-stage Docker builds (Node → Nginx)
+- 🔐 Integrated security scanning throughout the CI/CD pipeline
+- 🚀 GitOps-based continuous delivery with ArgoCD
+
+---
 
 ## 🛠️ Tech Stack
+
 | Component | Technologies |
-|-----------|--------------|
-| Frontend | TypeScript, React, Vite, Tailwind CSS, React Icons |
-| Build Tools | npm, Node.js 20+ |
-| Containerization | Docker Multi-stage Builds |
-| Security Scanning | Trivy (SCA), npm lint (SAST) |
-| CI/CD | GitHub Actions (cicd.yaml) |
-| Deployment | Kubernetes + ArgoCD + GHCR |
-| Infrastructure | GitHub Container Registry |
+|---------|-------------|
+| **Frontend** | TypeScript, React, Vite, Tailwind CSS, React Icons |
+| **Build Tools** | npm, Node.js 20+ |
+| **Containerization** | Docker (Multi-stage builds) |
+| **Security Scanning** | Trivy (SCA), ESLint (SAST) |
+| **CI/CD** | GitHub Actions |
+| **Deployment** | Kubernetes, ArgoCD |
+| **Registry** | GitHub Container Registry (GHCR) |
+
+---
 
 ## 🏗️ Project Structure
+
 ```
+
 .
-├── src/                    # TypeScript React source (.tsx)
+├── src/                    # React TypeScript source files
 │   ├── Square.tsx          # Game square component
 │   ├── Scoreboard.tsx      # Score tracking UI
 │   └── App.tsx             # Main game logic
 ├── tests/                  # Jest unit tests
-├── kubernetes/             # K8s manifests
+├── kubernetes/             # Kubernetes manifests
 │   └── deployment.yaml     # Auto-updated image tags
-├── Dockerfile              # Multi-stage Node→Nginx
-├── cicd.yaml               # Complete DevSecOps pipeline
+├── Dockerfile              # Multi-stage Node → Nginx build
+├── cicd.yaml               # GitHub Actions DevSecOps pipeline
 ├── package.json            # npm scripts & dependencies
 └── README.md
+
 ```
+
+---
 
 ## 🔄 Complete DevSecOps Pipeline
-Triggers on `push/PR` to `main` (excludes `kubernetes/` changes to prevent loops):
+
+Pipeline triggers on **push / pull request to `main`**  
+(`kubernetes/` directory is excluded to prevent GitOps loops)
 
 ```
-Push/PR → Unit Tests → SAST → Build → Docker Build → Trivy Scan → GHCR Push → Update K8s → ArgoCD Deploy
-```
 
-**Pipeline Jobs Breakdown:**
-1. **Unit Testing** – `npm test` validates game logic
-2. **Static Analysis** – `npm run lint` catches code issues
-3. **Build** – `npm run build` → `/dist` artifacts uploaded
-4. **Docker** – Multi-stage build → Trivy scan → Push `ghcr.io/abhishekveeramalla/devsecops-tictactoe:<sha>`
-5. **K8s Update** – Shell script commits new image tag to `deployment.yaml`
-6. **GitOps CD** – ArgoCD auto-deploys to Kubernetes
+Push / PR
+↓
+Unit Tests
+↓
+SAST (Lint)
+↓
+Build
+↓
+Docker Build
+↓
+Trivy Image Scan
+↓
+Push to GHCR
+↓
+Update K8s Manifest
+↓
+ArgoCD Sync & Deploy
+
+````
+
+---
+
+## 🔍 Pipeline Job Breakdown
+
+1. **Unit Testing**
+   - Runs `npm test`
+   - Validates game logic and components
+
+2. **Static Application Security Testing (SAST)**
+   - `npm run lint`
+   - Identifies code quality and security issues
+
+3. **Build**
+   - `npm run build`
+   - Generates production-ready `/dist` artifacts
+
+4. **Docker & Image Scanning**
+   - Multi-stage Docker build
+   - Trivy scans for vulnerabilities
+   - Pushes image to:
+     ```
+     ghcr.io/abdur-s/devsecops-tictactoe:<commit-sha>
+     ```
+
+5. **Kubernetes Manifest Update**
+   - Shell script updates `deployment.yaml`
+   - Commits new image tag automatically
+
+6. **GitOps Continuous Deployment**
+   - ArgoCD detects manifest change
+   - Syncs and deploys to Kubernetes cluster
+
+---
 
 ## 🚀 Quick Start Guide
 
-### Prerequisites
-```
-# Install Node.js 20+
-node --version  # v20.x.x
-npm --version   # 10.x.x
-docker --version
-```
+### ✅ Prerequisites
 
-### Local Development
-```
+```bash
+node --version    # v20.x.x
+npm --version     # v10.x.x
+docker --version
+````
+
+---
+
+### 💻 Local Development
+
+```bash
 git clone https://github.com/abhishekveeramalla/devsecops-tictactoe.git
 cd devsecops-tictactoe
+
 npm install
-npm run dev           # http://localhost:5137
-npm run build         # Creates /dist folder
-npm test              # Run unit tests
-npm run lint          # Static analysis
+npm run dev        # http://localhost:5137
+npm run build      # Generates /dist
+npm test           # Run unit tests
+npm run lint       # Static analysis
 ```
 
-### Docker Local Testing
-```
+---
+
+### 🐳 Docker Local Testing
+
+```bash
 docker build -t tictactoe:local .
 docker run -p 9099:80 tictactoe:local
-# Access: http://localhost:9099
 ```
 
-## 🔐 GitHub Secrets Setup
-1. **Create PAT Token**: `Settings → Developer settings → Personal access tokens → Generate new token (classic)`
-2. **Scopes**: `write:packages`, `read:packages`
-3. **Add Secret**: `Settings → Secrets and variables → Actions → New repository secret`
-   ```
-   Name: TOKEN
-   Value: <your-pat-token>
-   ```
+Access the application at:
+👉 [http://localhost:9099](http://localhost:9099)
 
-## 🐳 Multi-Stage Dockerfile Breakdown
+---
+
+## 🔐 GitHub Secrets Configuration
+
+### Step 1: Create a Personal Access Token (PAT)
+
+* GitHub → Settings
+* Developer settings → Personal access tokens (classic)
+* Required scopes:
+
+  * `write:packages`
+  * `read:packages`
+
+### Step 2: Add Repository Secret
+
+```text
+Name: TOKEN
+Value: <your-pat-token>
 ```
-# Build Stage (Node 20)
+
+---
+
+## 🐳 Multi-Stage Dockerfile
+
+```dockerfile
+# Build Stage
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
@@ -105,30 +194,50 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Production Stage (Nginx)
+# Production Stage
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
-**Benefits**: ~90% smaller image size, faster builds via layer caching
+
+### ✅ Benefits
+
+* ~90% smaller image size
+* Faster CI builds
+* Reduced attack surface
+* Production-grade static hosting
+
+---
 
 ## 📊 Pipeline Verification
-- **Actions Tab**: Monitor all job runs and logs
-- **Artifacts**: Download `/dist` from Build job
-- **Container Images**: `ghcr.io/abhishekveeramalla/devsecops-tictactoe:<commit-sha>`
-- **Deployed App**: `<k8s-node-ip>:80` (ArgoCD managed)
+
+* ✅ GitHub Actions: All pipeline stages passing
+* 📦 Build Artifacts: `/dist` available
+* 🐳 Container Images: Stored in GHCR with commit SHA tags
+* 🚀 Deployment: Managed automatically by ArgoCD
+
+---
 
 ## 🎥 Learning Resources
-- **Tutorial Inspiration**: [DevSecOps CI/CD Pipeline - Abhishek Veeramala](https://youtu.be/Ke_Wr5zPE0A)
-- **Original Demo**: [iam-veeramalla/devsecops-demo](https://github.com/iam-veeramalla/devsecops-demo)
 
-## 👨‍💻 Author 
-**Abdur S**  
+* **Reference Repository**
+  [https://github.com/iam-veeramalla/devsecops-demo](https://github.com/iam-veeramalla/devsecops-demo)
 
-Huge shoutout to Abhishek Veeramalla Bro for the world-class tutorial
+---
+
+## 👨‍💻 Author
+
+**Abdur S**
+
+🙏 Huge shoutout to **Abhishek Veeramala** for the world-class DevSecOps tutorial and inspiration.
 
 
 
+```
 
-**Just copy everything above the line and paste directly into your GitHub repository's README.md file! 🚀**
+---
+
+
+Just tell me 👍
+```
