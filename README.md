@@ -46,7 +46,6 @@ This project demonstrates how modern DevSecOps practices can be applied to a rea
 
 ```
 
-.
 ├── src/                    # React TypeScript source files
 │   ├── Square.tsx          # Game square component
 │   ├── Scoreboard.tsx      # Score tracking UI
