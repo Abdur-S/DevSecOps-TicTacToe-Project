@@ -137,7 +137,6 @@ docker build -t tictactoe:local .
 docker run -p 9099:80 tictactoe:local
 ```
 
-👉 http://localhost:9099
 
 ---
 
